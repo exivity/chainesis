@@ -2,9 +2,11 @@
   "name": "chains",
   "version": "0.0.1",
   "description": "Chain functions and proceed by calling next",
-  "main": "index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf ./dist && tsc",
+    "test": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -23,5 +25,13 @@
   "bugs": {
     "url": "https://github.com/Michiel87/chains/issues"
   },
-  "homepage": "https://github.com/Michiel87/chains#readme"
+  "homepage": "https://github.com/Michiel87/chains#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^24.0.16",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  }
 }
