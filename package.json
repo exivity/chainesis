@@ -1,0 +1,27 @@
+{
+  "name": "chains",
+  "version": "0.0.1",
+  "description": "Chain functions and proceed by calling next",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Michiel87/chains.git"
+  },
+  "keywords": [
+    "cps",
+    "continuation",
+    "passing",
+    "style",
+    "chains",
+    "callback"
+  ],
+  "author": "Michiel de Vos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Michiel87/chains/issues"
+  },
+  "homepage": "https://github.com/Michiel87/chains#readme"
+}
