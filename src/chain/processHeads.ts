@@ -1,3 +1,5 @@
+import { Callback, CPSMap } from './types'
+
 export function equalHeadsPositions (sequences: Callback[][]) {
   // Before we go on to next tick, first merge and delete rows with same first element (same parents)
   const equalHeadsPositions: number[][] = []

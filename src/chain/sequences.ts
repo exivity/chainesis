@@ -1,3 +1,4 @@
+import { iterate } from '../chain/utils'
 import { Tracker, TrackerItem, Callback, CPSMap } from './types'
 
 export function buildSequences (tracker: Tracker): Callback[][] {
@@ -5,7 +6,7 @@ export function buildSequences (tracker: Tracker): Callback[][] {
     .filter(([k, v]) => v.children && !v.children.length)
 
   return chains.reduce((sequences, [baseCb, { parent: parentCb }]) => {
-    const sequence = parentCb
+    const sequence: Callback[] = parentCb
       ? [baseCb, parentCb]
       : [baseCb]
 
@@ -13,24 +14,27 @@ export function buildSequences (tracker: Tracker): Callback[][] {
       if (parent) {
         sequence.push(parent)
         return tracker.get(parent)
-    }
+      }
     })
 
-    // @ts-ignore
     return sequences.concat([sequence])
-  }, [])
+  }, [] as Callback[][])
 }
 
+// Still want to refactor this
 export function mergeEqualSequences (equalHeads: number[][], cpsMap: CPSMap) {
   equalHeads.forEach((sequence, index) => {
     if (!sequence.length) return
+
     if (sequence[0] > index) {
       const currentEntry = cpsMap[index]
       const allCps = sequence.map(number => cpsMap[number])
+
       cpsMap[index] = (res) => {
         currentEntry && currentEntry(res)
         allCps.forEach(cpsFn => cpsFn && cpsFn(res))
       }
+
     } else {
       delete cpsMap[index]
     }

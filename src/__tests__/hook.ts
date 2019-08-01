@@ -1,7 +1,6 @@
 import { hookTo, unHookFrom } from '../chain/hook'
-import { Tracker } from '../chain/types'
+import { createTracker } from '../testUtils'
 
-const createTracker = (): Tracker => new Map()
 const fakeRootCb = () => ({})
 const fakeCbOne = () => ({})
 const fakeCbTwo = () => ({})

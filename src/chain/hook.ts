@@ -22,8 +22,8 @@ export function hookTo (tracker: Tracker) {
 export function unHookFrom (tracker: Tracker) {
   return function hookOff (currentCb: Callback) {
     if (tracker.has(currentCb)) {
-      deleteChildren(currentCb, tracker)
       removeSelfFromParent(currentCb, tracker)
+      deleteChildren(currentCb, tracker)
       tracker.delete(currentCb)
     }
   }
@@ -57,12 +57,11 @@ function removeSelfFromParent (currentCb: Callback, tracker: Tracker) {
   }
 }
 
-
 function deleteChildren (currentCb: Callback, tracker: Tracker) {
-  const toHookOff = tracker.get(currentCb) as TrackerItem
+  const { children } = tracker.get(currentCb) as TrackerItem
       
-  if (toHookOff.children) {
-    iterateArray(toHookOff.children, (child: Callback) => {
+  if (children) {
+    iterateArray(children, (child: Callback) => {
       const { children } = tracker.get(child) as TrackerItem
       tracker.delete(child)
       return children
