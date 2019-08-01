@@ -1,40 +1,81 @@
 import { chain } from './'
 
-const [hookOn, perform] = chain((result: any, next: any) => {
+const [hookOn, perform] = chain((result, next) => {
   setTimeout(() => {
     console.log('1', result)
-    next && next(result + ' one')
+    next(result + ' one')
   }, 2000)
 })
 
-// @ts-ignore
-const [hookOne] = hookOn((result: any, next: any) => {
+const [hookOne] = hookOn((result, next) => {
   setTimeout(() => {
     console.log('2', result)
-    next && next(result + ' two')
+    next(result + ' two')
   }, 2000)
 })
 
-hookOne((result: any, next: any) => {
+const [hookTwo] = hookOne((result, next) => {
   setTimeout(() => {
     console.log('3', result)
-    next && next(result + ' two22')
+    next(result + ' two22')
   }, 2000)
 })
 
-hookOne((result: any, next: any) => {
+hookOne((result, next) => {
   setTimeout(() => {
     console.log('4', result)
-    next && next(result + 'three')
+    next(result + 'three')
   }, 2000)
 })
 
-hookOne((result: any, next: any) => {
+hookOne((result, next) => {
   setTimeout(() => {
     console.log('5', result)
-    next && next(result + 'three')
+    next(result + 'three')
   }, 2000)
 })
 
-// @ts-ignore
+const [flooker] = hookTwo((result, next) => {
+  setTimeout(() => {
+    console.log('6', result)
+    next(result + 'three')
+  }, 2000)
+})
+
+hookTwo((result, next) => {
+  setTimeout(() => {
+    console.log('7', result)
+    next(result + 'three')
+  }, 2000)
+})
+
+const [hooker] = hookTwo((result, next) => {
+  setTimeout(() => {
+    console.log('8', result)
+    next(result + 'three')
+  }, 2000)
+})
+
+const [resHooker] = hooker((result, next) => {
+  setTimeout(() => {
+    console.log('hoookerrrrrrrrr', result)
+    next('shoookerrrrrrrrr' + result)
+  }, 2000)
+})
+
+const [resFlooker] = flooker((result, next) => {
+  setTimeout(() => {
+    console.log('together with hoookerrrrrrrrr', result)
+    next('together with hoookerrrrrrrrr' + result)
+  }, 1000)
+})
+
+resFlooker((res) => {
+  console.log('me' + res)
+})
+
+resHooker((res) => {
+  console.log('youooo' + res)
+})
+
 perform('start with me!')

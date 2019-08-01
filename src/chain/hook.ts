@@ -1,40 +1,40 @@
 import { iterateArray } from './utils'
-import { Tracker, TrackerItem, Callback } from './types'
+import { Tracker, TrackerItem, Callback, HookOn, HookOff, Tuple } from './types'
 
-export function hookTo (tracker: Tracker) {
+export function hookTo (tracker: Tracker): HookOn {
   const hookOff = unHookFrom(tracker)
 
-  return function hookOn (currentCb: Callback, parentCb?: Callback) {
-    tracker.set(currentCb, {
+  return function hookOn (cb: Callback, parentCb?: Callback): Tuple {
+    tracker.set(cb, {
       parent: parentCb,
       children: []
     })
 
-    addSelfToParent(currentCb, tracker)
+    addSelfToParent(cb, tracker)
 
     return [
-      (nextCb: Callback) => hookOn(nextCb, currentCb),
-      () => hookOff(currentCb)
-    ] as const
+      (nextCb: Callback) => hookOn(nextCb, cb),
+      () => hookOff(cb)
+    ]
   }
 }
 
-export function unHookFrom (tracker: Tracker) {
-  return function hookOff (currentCb: Callback) {
-    if (tracker.has(currentCb)) {
-      removeSelfFromParent(currentCb, tracker)
-      deleteChildren(currentCb, tracker)
-      tracker.delete(currentCb)
+export function unHookFrom (tracker: Tracker): HookOff {
+  return function hookOff (cb: Callback): void {
+    if (tracker.has(cb)) {
+      removeSelfFromParent(cb, tracker)
+      deleteChildren(cb, tracker)
+      tracker.delete(cb)
     }
   }
 }
 
-function addSelfToParent (currentCb: Callback, tracker: Tracker) {
-  const { parent: parentCb } = tracker.get(currentCb) as TrackerItem
+function addSelfToParent (cb: Callback, tracker: Tracker) {
+  const { parent: parentCb } = tracker.get(cb) as TrackerItem
   
   if (parentCb) {
     const { parent, children } = tracker.get(parentCb) as TrackerItem
-    const newChildren = children.concat([currentCb])
+    const newChildren = children.concat([cb])
 
     tracker.set(parentCb, {
       parent,
@@ -43,12 +43,12 @@ function addSelfToParent (currentCb: Callback, tracker: Tracker) {
   }
 }
 
-function removeSelfFromParent (currentCb: Callback, tracker: Tracker) {
-  const { parent: parentCb } = tracker.get(currentCb) as TrackerItem
+function removeSelfFromParent (cb: Callback, tracker: Tracker) {
+  const { parent: parentCb } = tracker.get(cb) as TrackerItem
 
   if (parentCb) {
     const { children, parent } = tracker.get(parentCb) as TrackerItem
-    const newChildren = children.filter(childCb => childCb !== currentCb)
+    const newChildren = children.filter(childCb => childCb !== cb)
 
     tracker.set(parentCb, {
       parent,
@@ -57,8 +57,8 @@ function removeSelfFromParent (currentCb: Callback, tracker: Tracker) {
   }
 }
 
-function deleteChildren (currentCb: Callback, tracker: Tracker) {
-  const { children } = tracker.get(currentCb) as TrackerItem
+function deleteChildren (cb: Callback, tracker: Tracker) {
+  const { children } = tracker.get(cb) as TrackerItem
       
   if (children) {
     iterateArray(children, (child: Callback) => {

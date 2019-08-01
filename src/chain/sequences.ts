@@ -21,22 +21,24 @@ export function buildSequences (tracker: Tracker): Callback[][] {
   }, [] as Callback[][])
 }
 
-// Still want to refactor this
 export function mergeEqualSequences (equalHeads: number[][], cpsMap: CPSMap) {
+  const newCps: CPSMap = {}
+
   equalHeads.forEach((sequence, index) => {
-    if (!sequence.length) return
+    if (!sequence.length) {
+      newCps[index] = cpsMap[index]
+    }
 
     if (sequence[0] > index) {
       const currentEntry = cpsMap[index]
       const allCps = sequence.map(number => cpsMap[number])
 
-      cpsMap[index] = (res) => {
+      newCps[index] = (res) => {
         currentEntry && currentEntry(res)
         allCps.forEach(cpsFn => cpsFn && cpsFn(res))
       }
-
-    } else {
-      delete cpsMap[index]
     }
   })
+
+  return newCps
 }

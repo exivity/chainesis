@@ -27,10 +27,3 @@ export function iterateArray (arr: any[], callback: (arg: any) => any[]) {
     })
   }
 }
-
-export function createCPSMap (sequences: Callback[][]): CPSMap {
-  return sequences.reduce((map, sequence, index) => {
-    map[index] = null
-    return map
-  }, {} as CPSMap)
-}
