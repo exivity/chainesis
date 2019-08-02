@@ -15,7 +15,9 @@ export type HookOn = (nextCb: Callback, parentCb?: Callback) => Tuple
 
 export type HookOff = (cb: Callback) => void
 
+export type HookOffRegisteredCb = () => void
+
 export type Tuple = [
   HookOn,
-  HookOff
+  HookOffRegisteredCb
 ]
