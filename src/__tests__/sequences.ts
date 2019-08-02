@@ -26,7 +26,6 @@ const three = {
   children: []
 }
 
-// Check if you need to put tallest array on top
 describe('buildSequences', () => {
   test('converts map into multi dimensional callback array (as sequences)', () => {
     const tracker = createTracker()
@@ -44,5 +43,21 @@ describe('buildSequences', () => {
 })
 
 describe('mergeEqualSequences', () => {
+  test('mergeEqualSequences merges key/value pairs of map', () => {
+    const fakeCpsMap = {
+      0: fakeCbThree,
+      1: fakeCbOne,
+      2: fakeCbTwo
+    }
 
+    const equalInfo = [[1], [0], []]
+
+    const resultCPSMap = mergeEqualSequences(equalInfo, fakeCpsMap)
+
+    expect(Object.keys(resultCPSMap)).toEqual(['0', '1'])
+    expect(resultCPSMap[0]).not.toBe(fakeCbThree)
+    expect(resultCPSMap[0]).not.toBe(fakeCbOne)
+    expect(resultCPSMap[1]).toBe(fakeCbTwo)
+    expect(resultCPSMap).not.toBe(fakeCpsMap)
+  })
 })

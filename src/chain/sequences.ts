@@ -21,10 +21,10 @@ export function buildSequences (tracker: Tracker): Callback[][] {
   }, [] as Callback[][])
 }
 
-export function mergeEqualSequences (equalHeads: number[][], cpsMap: CPSMap) {
+export function mergeEqualSequences (equalSequenceIndex: number[][], cpsMap: CPSMap) {
   const newCps: CPSMap = {}
-
-  equalHeads.forEach((sequence, index) => {
+  
+  equalSequenceIndex.forEach((sequence, index) => {
     if (!sequence.length) {
       newCps[index] = cpsMap[index]
     }
@@ -40,5 +40,8 @@ export function mergeEqualSequences (equalHeads: number[][], cpsMap: CPSMap) {
     }
   })
 
-  return newCps
+  return Object.keys(newCps).reduce((orderedMap, next, index) => {
+    orderedMap[index] = newCps[Number(next)]
+    return orderedMap
+  }, {} as CPSMap)
 }

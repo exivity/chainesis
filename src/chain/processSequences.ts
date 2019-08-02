@@ -1,35 +1,37 @@
 import { mergeEqualSequences } from './sequences'
 import { Callback, CPSMap } from './types'
 
-export function equalHeadsPositions (sequences: Callback[][]) {
-  const equalHeadsPositions: number[][] = []
+export function equalSequenceIndex (sequences: Callback[][]) {
+  const equalSequenceIndex: number[][] = []
 
   sequences.forEach((sequence, index) => {
-    equalHeadsPositions[index] = []
+    equalSequenceIndex[index] = []
     sequences.forEach((seq, i) => {
       if (index !== i && seq[0] === sequence[0]) {
-        equalHeadsPositions[index].push(i)
+        equalSequenceIndex[index].push(i)
       }
     })
   })
 
-  return equalHeadsPositions
+  return equalSequenceIndex
 }
 
 export function processFirstOfSequences (
   sequences: Callback[][], 
   cpsMap: CPSMap, 
   longest: number
-) {
-  return sequences.map((sequence, index) => {
+): [Callback[][], CPSMap] {
+  const processedCPSMap: CPSMap = {}
+
+  const processedSequences = sequences.map((sequence, index) => {
     if (sequence.length === longest) {
       const [firstCb, ...rest] = sequence
       const prevCb = cpsMap[index]
 
       if (prevCb) {
-        cpsMap[index] = (res) => firstCb(res, prevCb)
+        processedCPSMap[index] = (res) => firstCb(res, prevCb)
       } else {
-        cpsMap[index] = (res) => firstCb(res, () => ({}))
+        processedCPSMap[index] = (res) => firstCb(res, () => ({}))
       }
 
       return rest
@@ -37,6 +39,8 @@ export function processFirstOfSequences (
 
     return sequence
   })
+
+  return [processedSequences, processedCPSMap]
 }
 
 export function processSequences (
@@ -44,18 +48,18 @@ export function processSequences (
   longest: number, 
   cpsMap: CPSMap = {}
 ): CPSMap {
-  const processedSequences = processFirstOfSequences(sequences, cpsMap, longest)
-  const equalHeads = equalHeadsPositions(processedSequences)
-  const newCpsMap = mergeEqualSequences(equalHeads, cpsMap)
-
+  const [processedSequences, processedCpsMap] = processFirstOfSequences(sequences, cpsMap, longest)
+  const equalSeqIndex = equalSequenceIndex(processedSequences)
+  const mergedCpsMap = mergeEqualSequences(equalSeqIndex, processedCpsMap)
+  console.log(cpsMap)
   if (longest - 1 > 0) {
-    const toFilter = equalHeads
+    const toFilter = equalSeqIndex
       .filter((item, index) => item[0] > index)
       .reduce((acc, val) => acc.concat(val), [])
 
     const newSequences = processedSequences.filter((_, index) => !toFilter.includes(index))
-    return processSequences(newSequences, longest - 1, newCpsMap)
+    return processSequences(newSequences, longest - 1, mergedCpsMap)
   }
 
-  return newCpsMap
+  return mergedCpsMap
 }

@@ -1,4 +1,4 @@
-import { chain } from './'
+import { chain } from '../chain'
 
 const [hookOn, perform] = chain((result, next) => {
   setTimeout(() => {
@@ -32,6 +32,27 @@ hookOne((result, next) => {
   setTimeout(() => {
     console.log('5', result)
     next(result + 'three')
+  }, 2000)
+})
+
+const [anotherOne] = hookOn((result, next) => {
+  setTimeout(() => {
+    console.log('anothger one on root', result)
+    next(result + ' two')
+  }, 2000)
+})
+
+const [test] = anotherOne((result, next) => {
+  setTimeout(() => {
+    console.log('anothger one on root another one', result)
+    next(result + ' two')
+  }, 2000)
+})
+
+test((result, next) => {
+  setTimeout(() => {
+    console.log('teeeeest', result)
+    next(result + ' two')
   }, 2000)
 })
 

@@ -1,5 +1,3 @@
-import { Callback, CPSMap } from './types'
-
 export function getLongestLength (masterArr: any[]): number {
   let longest = -Infinity
 
