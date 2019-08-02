@@ -51,7 +51,7 @@ export function processSequences (
   const [processedSequences, processedCpsMap] = processFirstOfSequences(sequences, cpsMap, longest)
   const equalSeqIndex = equalSequenceIndex(processedSequences)
   const mergedCpsMap = mergeEqualSequences(equalSeqIndex, processedCpsMap)
-  console.log(cpsMap)
+
   if (longest - 1 > 0) {
     const toFilter = equalSeqIndex
       .filter((item, index) => item[0] > index)

@@ -6,7 +6,7 @@ export interface TrackerItem {
 export type Tracker = Map<Callback, TrackerItem>
 
 export interface CPSMap {
-  [key: number]: ((arg: any) => void)
+  [key: number]: ((arg: any) => void)|undefined
 }
 
 export type Callback = (arg: any, next: (arg: any) => void) => void

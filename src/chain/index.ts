@@ -8,9 +8,10 @@ function createRunner (tracker: Tracker) {
   return function runHooks (firstArg: any) {
     const sequences = buildSequences(tracker)
     const finishedMap = processSequences(sequences, getLongestLength(sequences))
-
-    if (typeof finishedMap[0] === 'function') {
-      finishedMap[0](firstArg)
+    const isFinishedMap = finishedMap[0]
+    
+    if (isFinishedMap) {
+      isFinishedMap(firstArg)
     }
   }
 }
