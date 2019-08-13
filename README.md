@@ -24,7 +24,7 @@ API
 ### `chain`
 
 ```jsx
-import { chain } from 'chains'
+import { chain } from 'chainesis'
 
 const [hookOnChain, runChain] = chain((runChainArg, next) => {
  // do something
