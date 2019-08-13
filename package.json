@@ -1,5 +1,5 @@
 {
-  "name": "chains",
+  "name": "chainesis",
   "version": "0.0.1",
   "description": "Chain functions and proceed by calling next",
   "main": "dist/index.js",
@@ -20,7 +20,7 @@
     "chains",
     "callback"
   ],
-  "author": "Michiel de Vos",
+  "author": "Michiel de Vos <Michiel_87@hotmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Michiel87/chains/issues"
