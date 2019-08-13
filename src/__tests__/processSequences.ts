@@ -31,7 +31,7 @@ describe('equalSequenceIndex', () => {
 })
 
 describe('processFirstOfSequences', () => {
-  test('processFirstOfSequences returns a typle with new sequences and new cpsMap', () => {
+  test('processFirstOfSequences returns a tuple with new sequences and new cpsMap', () => {
     const sequences = [
       [fakeCbOne, fakeRootCb],
       [fakeCbOne, fakeRootCb],
