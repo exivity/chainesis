@@ -1,6 +1,6 @@
 {
   "name": "chainesis",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Chain functions and proceed by calling next",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

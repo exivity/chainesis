@@ -9,13 +9,13 @@ Installation
 _npm_
 
 ```
-npm install --save chains
+npm install --save chainesis
 ```
 
 _yarn_
 
 ```
-yarn add chains
+yarn add chainesis
 ```
 
 API
